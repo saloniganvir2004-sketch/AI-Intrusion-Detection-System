@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>G3 AI IDS - Model Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Roboto+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#a3aac4",
+                    "inverse-on-surface": "#4d556b",
+                    "primary-dim": "#15a4ff",
+                    "surface-container-highest": "#192540",
+                    "surface": "#060e20",
+                    "secondary-fixed-dim": "#58e7ab",
+                    "on-error": "#490006",
+                    "on-background": "#dee5ff",
+                    "on-tertiary-fixed-variant": "#79000e",
+                    "on-primary-fixed-variant": "#002e4d",
+                    "surface-bright": "#1f2b49",
+                    "secondary-fixed": "#69f6b8",
+                    "surface-tint": "#5eb4ff",
+                    "surface-container-lowest": "#000000",
+                    "on-secondary-fixed-variant": "#006544",
+                    "on-error-container": "#ffa8a3",
+                    "tertiary": "#ff716a",
+                    "outline-variant": "#40485d",
+                    "secondary-container": "#006c49",
+                    "tertiary-container": "#fd4e4d",
+                    "inverse-surface": "#faf8ff",
+                    "surface-container-low": "#091328",
+                    "on-tertiary-container": "#1f0001",
+                    "primary": "#5eb4ff",
+                    "surface-container-high": "#141f38",
+                    "surface-variant": "#192540",
+                    "outline": "#6d758c",
+                    "secondary-dim": "#58e7ab",
+                    "error-dim": "#d7383b",
+                    "inverse-primary": "#00639e",
+                    "error": "#ff716c",
+                    "tertiary-fixed": "#ff928b",
+                    "background": "#060e20",
+                    "tertiary-dim": "#ff716a",
+                    "on-primary": "#003151",
+                    "error-container": "#9f0519",
+                    "on-secondary": "#005a3c",
+                    "on-secondary-fixed": "#00452d",
+                    "primary-fixed": "#2aa7ff",
+                    "surface-container": "#0f1930",
+                    "on-secondary-container": "#e1ffec",
+                    "tertiary-fixed-dim": "#ff7b74",
+                    "on-primary-container": "#00253f",
+                    "secondary": "#69f6b8",
+                    "primary-fixed-dim": "#0099f0",
+                    "on-tertiary-fixed": "#3a0003",
+                    "primary-container": "#2aa7ff",
+                    "on-surface": "#dee5ff",
+                    "surface-dim": "#060e20",
+                    "on-tertiary": "#490005",
+                    "on-primary-fixed": "#000000"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"],
+                    "mono": ["Roboto Mono"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #40485d; border-radius: 10px; }
+        .glass-card {
+            background: rgba(25, 37, 64, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(64, 72, 93, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex flex-col min-h-screen overflow-x-hidden">
+<!-- TopNavBar Component from COMPONENTS_10 -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 h-16 bg-[#060e20]/80 backdrop-blur-xl shadow-[0_24px_48px_rgba(0,0,0,0.5)]">
+<div class="flex items-center gap-12">
+<div class="text-xl font-bold tracking-tighter text-[#00A3FF] drop-shadow-[0_0_8px_rgba(0,163,255,0.4)] font-['Space_Grotesk']">
+                G3 AI IDS
+            </div>
+<nav class="flex gap-8 items-center h-full">
+<a class="text-[#a3aac4] hover:text-[#00A3FF] transition-colors uppercase tracking-[0.05em] text-xs font-['Inter']" href="/dashboard">Traffic Monitor</a>
+<a class="text-[#00A3FF] border-b-2 border-[#00A3FF] pb-1 font-bold uppercase tracking-[0.05em] text-xs font-['Inter']" href="/analysis">Model Analysis</a>
+<a class="text-[#a3aac4] hover:text-[#00A3FF] transition-colors uppercase tracking-[0.05em] text-xs font-['Inter']" href="/about">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(105,246,184,0.5)] animate-pulse"></span>
+<span class="text-[10px] font-mono text-secondary uppercase tracking-[0.2em]">System: Active</span>
+</div>
+<div class="flex items-center gap-4">
+<!-- <button class="material-symbols-outlined text-[#a3aac4] hover:text-[#00A3FF] transition-colors text-xl">notifications</button> -->
+<div class="w-8 h-8 rounded-full border border-outline-variant/30 flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-[#00A3FF]/50 transition-all cursor-pointer">
+<img alt="User cybersecurity operative profile" class="w-full h-full object-cover" src="user.jpg"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 mt-16 overflow-y-auto custom-scrollbar bg-surface-container-low">
+<div class="p-10 max-w-[1400px] mx-auto w-full pb-24">
+<!-- Page Title Section -->
+<div class="mb-12">
+<h1 class="text-5xl font-bold tracking-tight text-on-surface mb-3 font-headline">Model Performance &amp; Analysis</h1>
+<div class="flex items-center justify-between">
+<!-- <p class="text-on-surface-variant text-sm flex items-center gap-2 font-body">
+<span class="material-symbols-outlined text-primary text-base">info</span>
+                        Analysis for Sentinel Core v4.2.8 Deep Neural Network (Last Training: 2023-11-24)
+                    </p> -->
+<!-- <div class="flex gap-3">
+<button class="px-4 py-2 bg-primary text-on-primary text-xs font-bold uppercase tracking-wider rounded-lg hover:brightness-110 transition-all active:scale-95 duration-200">
+                            Export Report
+                        </button>
+</div> -->
+</div>
+</div>
+<!-- Glassmorphic Key Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+<!-- Accuracy -->
+<div class="glass-card p-8 rounded-2xl transition-all hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(0,163,255,0.1)] group">
+<div class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant mb-4 font-bold">Accuracy</div>
+<div class="flex items-end justify-between">
+<div class="text-5xl font-headline font-bold text-primary transition-colors group-hover:text-white">{% if metrics %}{{ "%.1f"|format(metrics.accuracy * 100) }}{% else %}0.0{% endif %}<span class="text-xl ml-0.5 opacity-60">%</span></div>
+<div class="bg-secondary/10 px-2 py-1 rounded text-secondary text-xs font-bold flex items-center gap-0.5 mb-1">
+<!-- <span class="material-symbols-outlined text-sm">trending_up</span> +0.4% -->
+                        </div>
+</div>
+</div>
+<!-- Precision -->
+<div class="glass-card p-8 rounded-2xl transition-all hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(0,163,255,0.1)] group">
+<div class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant mb-4 font-bold">Precision</div>
+<div class="flex items-end justify-between">
+<div class="text-5xl font-headline font-bold text-primary transition-colors group-hover:text-white">{% if metrics %}{{ "%.1f"|format(metrics.precision * 100) }}{% else %}0.0{% endif %}<span class="text-xl ml-0.5 opacity-60">%</span></div>
+<div class="bg-outline-variant/10 px-2 py-1 rounded text-on-surface-variant text-xs font-bold flex items-center gap-0.5 mb-1">
+<!-- <span class="material-symbols-outlined text-sm">horizontal_rule</span> stable -->
+                        </div>
+</div>
+</div>
+<!-- Recall -->
+<div class="glass-card p-8 rounded-2xl transition-all hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(0,163,255,0.1)] group">
+<div class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant mb-4 font-bold">Recall</div>
+<div class="flex items-end justify-between">
+<div class="text-5xl font-headline font-bold text-primary transition-colors group-hover:text-white">{% if metrics %}{{ "%.1f"|format(metrics.recall * 100) }}{% else %}0.0{% endif %}<span class="text-xl ml-0.5 opacity-60">%</span></div>
+<div class="bg-secondary/10 px-2 py-1 rounded text-secondary text-xs font-bold flex items-center gap-0.5 mb-1">
+<!-- <span class="material-symbols-outlined text-sm">trending_up</span> +1.2% -->
+                        </div>
+</div>
+</div>
+<!-- F1 Score -->
+<div class="glass-card p-8 rounded-2xl transition-all hover:translate-y-[-4px] hover:shadow-[0_20px_40px_rgba(0,163,255,0.1)] group">
+<div class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant mb-4 font-bold">F1 Score</div>
+<div class="flex items-end justify-between">
+<div class="text-5xl font-headline font-bold text-primary transition-colors group-hover:text-white">{% if metrics %}{{ "%.1f"|format(metrics.f1 * 100) }}{% else %}0.0{% endif %}<span class="text-xl ml-0.5 opacity-60">%</span></div>
+<div class="bg-secondary/10 px-2 py-1 rounded text-secondary text-xs font-bold flex items-center gap-0.5 mb-1">
+<!-- <span class="material-symbols-outlined text-sm">trending_up</span> +0.8% -->
+                        </div>
+</div>
+</div>
+</div>
+<!-- Main Analytics Split -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Left: Confusion Matrix -->
+<div class="lg:col-span-5 glass-card p-10 rounded-2xl">
+<div class="flex justify-between items-center mb-10">
+<h2 class="text-2xl font-bold flex items-center gap-3 font-headline">
+<span class="w-1.5 h-6 bg-primary-dim rounded-full"></span>
+                            Confusion Matrix
+                        </h2>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white transition-colors">settings</span>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<!-- True Positive -->
+<div class="bg-primary-container/20 p-8 rounded-xl border border-primary/20 flex flex-col justify-between h-44 hover:bg-primary-container/30 transition-colors cursor-default">
+<div class="text-[11px] font-bold uppercase tracking-[0.2em] text-primary-fixed-dim">True Positive</div>
+<div class="flex justify-between items-end">
+<div class="text-4xl font-mono font-bold text-primary">{% if metrics %}{{ metrics.cm.tp }}{% else %}0{% endif %}</div>
+<div class="text-xs font-mono text-primary/40">TP</div>
+</div>
+</div>
+<!-- False Positive -->
+<div class="bg-error-container/20 p-8 rounded-xl border border-tertiary/20 flex flex-col justify-between h-44 hover:bg-error-container/30 transition-colors cursor-default">
+<div class="text-[11px] font-bold uppercase tracking-[0.2em] text-tertiary-fixed">False Positive</div>
+<div class="flex justify-between items-end">
+<div class="text-4xl font-mono font-bold text-tertiary">{% if metrics %}{{ metrics.cm.fp }}{% else %}0{% endif %}</div>
+<div class="text-xs font-mono text-tertiary/40">FP</div>
+</div>
+</div>
+<!-- False Negative -->
+<div class="bg-tertiary-container/10 p-8 rounded-xl border border-tertiary-container/20 flex flex-col justify-between h-44 hover:bg-tertiary-container/20 transition-colors cursor-default">
+<div class="text-[11px] font-bold uppercase tracking-[0.2em] text-tertiary-fixed-dim">False Negative</div>
+<div class="flex justify-between items-end">
+<div class="text-4xl font-mono font-bold text-tertiary-dim">{% if metrics %}{{ metrics.cm.fn }}{% else %}0{% endif %}</div>
+<div class="text-xs font-mono text-tertiary/40">FN</div>
+</div>
+</div>
+<!-- True Negative -->
+<div class="bg-secondary-container/20 p-8 rounded-xl border border-secondary/20 flex flex-col justify-between h-44 hover:bg-secondary-container/30 transition-colors cursor-default">
+<div class="text-[11px] font-bold uppercase tracking-[0.2em] text-secondary-fixed">True Negative</div>
+<div class="flex justify-between items-end">
+<div class="text-4xl font-mono font-bold text-secondary">{% if metrics %}{{ metrics.cm.tn }}{% else %}0{% endif %}</div>
+<div class="text-xs font-mono text-secondary/40">TN</div>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-between text-xs text-on-surface-variant font-mono border-t border-outline-variant/10 pt-6">
+<div class="flex gap-6">
+<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>PRECISION: {% if metrics %}{{ "%.3f"|format(metrics.precision) }}{% endif %}</span>
+<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>RECALL: {% if metrics %}{{ "%.3f"|format(metrics.recall) }}{% endif %}</span>
+</div>
+<div class="text-primary-dim uppercase tracking-[0.1em] font-bold">98% CONFIDENCE</div>
+</div>
+</div>
+<!-- Right: Precision-Recall Curve -->
+<div class="lg:col-span-7 glass-card p-10 rounded-2xl h-full flex flex-col">
+<div class="flex justify-between items-center mb-10">
+<h2 class="text-2xl font-bold flex items-center gap-3 font-headline">
+<span class="w-1.5 h-6 bg-primary-dim rounded-full"></span>
+                            Precision-Recall Curve
+                        </h2>
+<div class="flex gap-6">
+<div class="flex items-center gap-2 text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">
+<!-- <span class="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(94,180,255,0.5)]"></span> Model v4.2 -->
+                            </div>
+<div class="flex items-center gap-2 text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">
+<!-- <span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span> Baseline -->
+                            </div>
+</div>
+</div>
+<div class="flex-1 relative min-h-[350px]">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 500 300">
+<defs>
+<lineargradient id="curveGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#5eb4ff"></stop>
+<stop offset="100%" stop-color="#2aa7ff"></stop>
+</lineargradient>
+</defs>
+<!-- Grid -->
+<g opacity="0.1">
+<line stroke="#dee5ff" stroke-width="0.5" x1="0" x2="500" y1="0" y2="0"></line>
+<line stroke="#dee5ff" stroke-width="0.5" x1="0" x2="500" y1="75" y2="75"></line>
+<line stroke="#dee5ff" stroke-width="0.5" x1="0" x2="500" y1="150" y2="150"></line>
+<line stroke="#dee5ff" stroke-width="0.5" x1="0" x2="500" y1="225" y2="225"></line>
+<line stroke="#dee5ff" stroke-width="0.5" x1="0" x2="500" y1="300" y2="300"></line>
+<line stroke="#dee5ff" stroke-width="0.5" x1="0" x2="0" y1="0" y2="300"></line>
+<line stroke="#dee5ff" stroke-width="0.5" x1="125" x2="125" y1="0" y2="300"></line>
+<line stroke="#dee5ff" x1="250" x2="250" y1="0" y2="300"></line>
+<line stroke="#dee5ff" x1="375" x2="375" y1="0" y2="300"></line>
+</g>
+<!-- Baseline -->
+<path d="M0 0 Q 300 50 500 300" fill="none" opacity="0.3" stroke="#40485d" stroke-dasharray="8,4" stroke-width="1.5"></path>
+{% if metrics %}
+<!-- Main Curve -->
+<path d="{% for pt in metrics.pr_curve %}{% if loop.first %}M{% else %}L{% endif %} {{ pt.recall * 500 }} {{ 300 - (pt.precision * 300) }} {% endfor %}" fill="none" stroke="url(#curveGradient)" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"></path>
+<!-- Point -->
+{% set opt = metrics.pr_curve[5] %}
+<circle class="animate-pulse" cx="{{ opt.recall * 500 }}" cy="{{ 300 - (opt.precision * 300) }}" fill="#5eb4ff" r="8"></circle>
+<circle cx="{{ opt.recall * 500 }}" cy="{{ 300 - (opt.precision * 300) }}" fill="white" r="3"></circle>
+{% endif %}
+</svg>
+<!-- Tooltip -->
+{% if metrics %}
+{% set opt = metrics.pr_curve[5] %}
+<div class="absolute bg-surface-bright/90 backdrop-blur-md border border-primary/40 p-5 rounded-xl shadow-[0_12px_24px_rgba(0,0,0,0.4)]" style="top: {{ [300 - (opt.precision * 300) - 20, 0]|max }}px; left: {{ [opt.recall * 500 + 20, 0]|max }}px; max-width:180px;">
+<div class="text-[10px] text-primary font-bold uppercase tracking-widest mb-2">Optimal Point</div>
+<div class="text-lg font-mono font-bold flex gap-4">
+<div class=""><span class="text-on-surface-variant text-xs font-sans font-medium mr-1 uppercase">P</span>{{ "%.3f"|format(opt.precision) }}</div>
+<div class="w-px h-6 bg-outline-variant/30"></div>
+<div class=""><span class="text-on-surface-variant text-xs font-sans font-medium mr-1 uppercase">R</span>{{ "%.3f"|format(opt.recall) }}</div>
+</div>
+</div>
+{% endif %}
+<!-- Labels -->
+<div class="absolute -left-12 top-1/2 -rotate-90 text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-[0.3em]">Precision</div>
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-mono font-bold text-on-surface-variant uppercase tracking-[0.3em]">Recall</div>
+</div>
+</div>
+</div>
+<!-- Feature Importance -->
+<div class="glass-card p-10 rounded-2xl mb-12">
+<div class="flex justify-between items-start mb-12">
+<div class="flex flex-col gap-2">
+<h2 class="text-2xl font-bold flex items-center gap-3 font-headline">
+<span class="w-1.5 h-6 bg-primary-dim rounded-full"></span>
+                            Feature Importance
+                        </h2>
+<p class="text-sm text-on-surface-variant max-w-xl font-body">High values indicate strong predictive signal for the current model architecture.</p>
+</div>
+<div class="flex bg-surface-container px-5 py-2.5 rounded-full border border-outline-variant/20 shadow-inner">
+<!-- <span class="text-xs font-mono text-primary font-bold tracking-wider">ACTIVE MODEL: v4.2.8_PRODUCTION</span> -->
+</div>
+</div>
+<div class="space-y-8">
+<!-- Feature Items -->
+{% if metrics and metrics.top_features %}
+{% set max_score = metrics.top_features[0].score %}
+{% for feature in metrics.top_features %}
+<div class="grid grid-cols-12 items-center gap-6 group cursor-pointer">
+<div class="col-span-3 text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors flex items-center gap-3">
+<span class="material-symbols-outlined text-base opacity-40"></span>
+                            {{ feature.name }}
+                        </div>
+<div class="col-span-8">
+<div class="h-3 bg-surface-container-lowest rounded-full overflow-hidden border border-outline-variant/10">
+<div class="h-full bg-gradient-to-r from-primary/60 to-primary rounded-full {% if loop.index == 1 %}shadow-[0_0_15px_rgba(94,180,255,0.4)] transition-all duration-1000 ease-out{% else %}opacity-{{ 100 - loop.index * 10 }}{% endif %}" style="width: {{ (feature.score / max_score) * 100 }}%;"></div>
+</div>
+</div>
+<div class="col-span-1 text-right font-mono text-sm {% if loop.index == 1 %}text-primary font-bold{% else %}text-on-surface-variant{% endif %}">{{ "%.3f"|format(feature.score) }}</div>
+</div>
+{% endfor %}
+{% endif %}
+</div>
+<div class="mt-12 pt-8 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="text-[10px] text-on-surface-variant font-mono uppercase tracking-[0.2em]">Updated: 4 minutes ago</span>
+<div class="flex gap-4">
+<!-- <button class="px-6 py-2.5 border border-outline-variant/50 hover:border-primary/50 transition-all text-xs font-bold uppercase tracking-wider rounded-lg text-on-surface-variant hover:text-primary">Download Dataset</button> -->
+<!-- <button class="px-6 py-2.5 bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-all text-xs font-bold uppercase tracking-wider rounded-lg">Run Analysis Re-calc</button> -->
+</div>
+</div>
+</div>
+</div>
+</main>
+
+</body></html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>G3 AI IDS - Traffic Monitor</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Roboto+Mono&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-bright": "#1f2b49",
+            "primary-dim": "#15a4ff",
+            "on-primary-fixed-variant": "#002e4d",
+            "on-secondary": "#005a3c",
+            "error-container": "#9f0519",
+            "on-secondary-fixed-variant": "#006544",
+            "on-primary-fixed": "#000000",
+            "tertiary-dim": "#ff716a",
+            "primary": "#5eb4ff",
+            "primary-container": "#2aa7ff",
+            "surface-container-low": "#091328",
+            "error-dim": "#d7383b",
+            "secondary-fixed-dim": "#58e7ab",
+            "primary-fixed-dim": "#0099f0",
+            "surface-container-lowest": "#000000",
+            "secondary": "#69f6b8",
+            "on-secondary-fixed": "#00452d",
+            "on-surface-variant": "#a3aac4",
+            "on-tertiary": "#490005",
+            "surface-variant": "#192540",
+            "tertiary-fixed-dim": "#ff7b74",
+            "secondary-fixed": "#69f6b8",
+            "on-background": "#dee5ff",
+            "surface-container-highest": "#192540",
+            "on-surface": "#dee5ff",
+            "surface-tint": "#5eb4ff",
+            "on-primary-container": "#00253f",
+            "tertiary-container": "#fd4e4d",
+            "surface-dim": "#060e20",
+            "tertiary-fixed": "#ff928b",
+            "secondary-dim": "#58e7ab",
+            "on-secondary-container": "#e1ffec",
+            "outline": "#6d758c",
+            "on-error": "#490006",
+            "surface": "#060e20",
+            "surface-container": "#0f1930",
+            "on-tertiary-fixed-variant": "#79000e",
+            "primary-fixed": "#2aa7ff",
+            "inverse-primary": "#00639e",
+            "inverse-on-surface": "#4d556b",
+            "tertiary": "#ff716a",
+            "surface-container-high": "#141f38",
+            "background": "#060e20",
+            "on-tertiary-container": "#1f0001",
+            "on-primary": "#003151",
+            "on-tertiary-fixed": "#3a0003",
+            "outline-variant": "#40485d",
+            "on-error-container": "#ffa8a3",
+            "secondary-container": "#006c49",
+            "inverse-surface": "#faf8ff",
+            "error": "#ff716c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "fontFamily": {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["Inter"],
+            "mono": ["Roboto Mono"]
+          }
+        },
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-headline {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .font-mono {
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #060e20;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #192540;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #40485d;
+    }
+  </style>
+</head>
+
+<body class="bg-surface text-on-surface selection:bg-primary/30">
+  <!-- TopNavBar -->
+  <header
+    class="fixed top-0 right-0 left-0 bg-[#060e20]/80 backdrop-blur-xl z-40 border-b border-[#40485d]/15 shadow-2xl shadow-black/50">
+    <div class="flex justify-between items-center w-full px-8 py-4">
+      <div class="flex items-center gap-12">
+        <div>
+          <h1 class="text-xl font-bold tracking-tighter text-[#00A3FF] font-headline">G3 AI IDS</h1>
+          <p class="text-[9px] uppercase tracking-widest text-on-surface-variant/60 font-medium -mt-1"><br />
+          </p>
+        </div>
+        <nav class="flex gap-8">
+          <a class="text-[#00A3FF] text-xs font-bold tracking-wide border-b-2 border-[#00A3FF] pb-1 uppercase"
+            href="/">TRAFFIC MonitoR</a>
+          <a class="text-[#a3aac4] text-xs font-medium tracking-wide hover:text-white transition-opacity uppercase"
+            href="/analysis">MODEL ANALYSIS</a>
+          <a class="text-[#a3aac4] text-xs font-medium tracking-wide hover:text-white transition-opacity uppercase"
+            href="/about">ABOUT</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-secondary animate-pulse shadow-[0_0_8px_#69f6b8]"></div>
+          <span class="text-[11px] font-headline font-bold text-[#00A3FF] tracking-wider uppercase">System:
+            Active</span>
+        </div>
+        <span class="text-[11px] font-mono text-[#a3aac4] border-l border-outline-variant/20 pl-6"><br /></span>
+        <div class="flex items-center gap-4 border-l border-outline-variant/20 pl-6">
+          <!-- <button class="material-symbols-outlined text-[#a3aac4] hover:text-white transition-colors relative">
+            notifications
+            <span class="absolute -top-1 -right-1 w-2 h-2 bg-tertiary rounded-full border border-surface"></span>
+          </button> -->
+          <<div class="flex items-center gap-3 ml-2">
+
+  <div class="w-7 h-7 rounded-full bg-[#00A3FF] flex items-center justify-center text-black font-bold">
+    {{ session['user'][0]|upper }}
+  </div>
+
+  <span class="text-[11px] text-[#00A3FF] font-medium">
+    {{ session['user'] }}
+  </span>
+
+  <a href="/logout"
+     class="text-[10px] px-2 py-1 border border-[#00A3FF] rounded hover:bg-[#00A3FF] hover:text-black transition">
+     Logout
+  </a>
+
+</div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Main Canvas -->
+  <main class="pt-24 px-8 pb-12 min-h-screen bg-surface">
+    <!-- Summary Dashboard (Metric Grid) -->
+    <div class="grid grid-cols-2 gap-12 mb-8">
+      <!-- <div class="bg-surface-container-low p-6 rounded-sm border-l-2 border-primary-dim relative overflow-hidden group">
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+        </div>
+        <p class="text-[10px] font-label font-bold uppercase tracking-widest text-on-surface-variant mb-2">Live
+          PPS</p>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-headline font-bold text-white">{{ stats.total_logs }}</span>
+          <span class="text-xs font-mono text-secondary">+12.4%</span>
+        </div>
+        <div class="mt-4 h-1 w-full bg-surface-variant rounded-full overflow-hidden">
+          <div class="h-full bg-primary-dim w-[70%] shadow-[0_0_8px_#15a4ff]"></div>
+        </div>
+      </div> -->
+      <div class="bg-surface-container-low p-6 rounded-sm border-l-2 border-secondary relative overflow-hidden">
+        <p class="text-[10px] font-label font-bold uppercase tracking-widest text-on-surface-variant mb-2">
+          Total Traffic Logs</p>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-headline font-bold text-white">{{ stats.total_logs }}</span>
+          <!-- <span class="text-xs font-mono text-on-surface-variant">NOMINAL</span> -->
+        </div>
+        <div class="mt-4 flex gap-1">
+          <div class="h-1 flex-1 bg-secondary shadow-[0_0_4px_#69f6b8]"></div>
+          <div class="h-1 flex-1 bg-secondary/40"></div>
+          <div class="h-1 flex-1 bg-secondary/40"></div>
+          <div class="h-1 flex-1 bg-secondary/40"></div>
+          <div class="h-1 flex-1 bg-secondary/40"></div>
+        </div>
+      </div>
+      <div class="bg-surface-container-low p-6 rounded-sm border-l-2 border-tertiary relative overflow-hidden">
+        <p class="text-[10px] font-label font-bold uppercase tracking-widest text-on-surface-variant mb-2">
+          Threats Blocked</p>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-headline font-bold text-white">{{ stats.total_alerts }}</span>
+          <!-- <span class="text-xs font-mono text-tertiary animate-pulse">CRITICAL</span> -->
+        </div>
+        <div class="mt-4 h-1 w-full bg-surface-variant rounded-full">
+          <div class="h-full bg-tertiary w-[15%] shadow-[0_0_8px_#ff716a]"></div>
+        </div>
+      </div>
+      <!-- <div
+        class="bg-surface-container-low p-6 rounded-sm border-l-2 border-on-surface-variant/40 relative overflow-hidden">
+        <p class="text-[10px] font-label font-bold uppercase tracking-widest text-on-surface-variant mb-2">
+          Throughput</p>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-headline font-bold text-white">1.2 <span class="text-lg"
+             >Gbps</span></span>
+        </div>
+        <div class="mt-4 h-8 flex items-end gap-1">
+          <div class="w-1 h-[40%] bg-outline-variant/30"></div>
+          <div class="w-1 h-[60%] bg-outline-variant/30"></div>
+          <div class="w-1 h-[80%] bg-primary/40"></div>
+          <div class="w-1 h-[50%] bg-primary/40"></div>
+          <div class="w-1 h-[90%] bg-primary"></div>
+          <div class="w-1 h-[70%] bg-primary"></div>
+          <div class="w-1 h-[40%] bg-primary/40"></div>
+        </div>
+      </div> -->
+    </div>
+    <!-- Live Traffic Table Module -->
+    <section id="traffic-table-section"
+      class="bg-surface-container-low rounded-sm overflow-hidden flex flex-col h-[calc(100vh-28rem)]">
+      <div class="px-6 py-4 flex justify-between items-center border-b border-outline-variant/10">
+        <div class="flex items-center gap-3">
+          <div class="w-1 h-4 bg-primary-dim"></div>
+          <h2 class="text-sm font-headline font-bold text-white uppercase tracking-wider">Live Packet Stream
+          </h2>
+        </div>
+        <div class="flex gap-4">
+          <button
+            class="flex items-center gap-2 px-3 py-1 bg-surface-variant hover:bg-surface-bright transition-colors text-[10px] font-bold uppercase tracking-wider text-on-surface"
+            onclick="window.location.reload();">
+            <span class="material-symbols-outlined text-sm">refresh</span> Manual Refresh
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1 bg-surface-variant hover:bg-surface-bright transition-colors text-[10px] font-bold uppercase tracking-wider text-on-surface"
+            onclick="toggleFullscreen()">
+            <span class="material-symbols-outlined text-sm">fullscreen</span> Full Screen
+          </button>
+
+<a href="/report"
+   class="flex items-center gap-2 px-3 py-1 bg-primary-dim hover:bg-primary transition-colors text-[10px] font-bold uppercase tracking-wider text-black">
+   Generate Report
+</a>
+          <!-- <button
+            class="flex items-center gap-2 px-3 py-1 bg-surface-variant hover:bg-surface-bright transition-colors text-[10px] font-bold uppercase tracking-wider text-on-surface"
+           >
+            <span class="material-symbols-outlined text-sm">filter_list</span> Filter
+          </button>
+          <button
+            class="flex items-center gap-2 px-3 py-1 bg-surface-variant hover:bg-surface-bright transition-colors text-[10px] font-bold uppercase tracking-wider text-on-surface"
+           >
+            <span class="material-symbols-outlined text-sm">download</span> Export
+          </button> -->
+        </div>
+      </div>
+      <div class="flex-1 overflow-auto custom-scrollbar">
+        <table class="w-full text-left border-collapse">
+          <thead class="sticky top-0 bg-surface-container-low z-10">
+            <tr class="bg-surface-container-high border-b border-outline-variant/20">
+              <th class="px-6 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+                Timestamp</th>
+              <th class="px-6 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+                Source IP</th>
+              <th class="px-6 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+                Destination IP</th>
+              <th class="px-6 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest text-center">
+                Protocol</th>
+              <th class="px-6 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+                Port</th>
+              <th class="px-6 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest text-right">
+                Size</th>
+              <th class="px-6 py-3 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest text-center">
+                AI Verdict</th>
+            </tr>
+          </thead>
+          <tbody class="font-mono text-[11px] divide-y divide-outline-variant/5">
+            {% for log in logs %}
+            <tr class="hover:bg-surface-container transition-colors group">
+              <td class="px-6 py-3 text-on-surface-variant group-hover:text-primary">{{
+                log.timestamp.strftime('%H:%M:%S') }}</td>
+              <td class="px-6 py-3 text-on-surface">{{ log.source_ip }}</td>
+              <td class="px-6 py-3 text-on-surface">{{ log.destination_ip }}</td>
+              <td class="px-6 py-3 text-center"><span class="bg-surface-variant px-2 py-0.5 rounded-sm">{{ log.protocol
+                  }}</span></td>
+              <td class="px-6 py-3 text-on-surface-variant">N/A</td>
+              <td class="px-6 py-3 text-right text-on-surface-variant">{{ "{:.1f}".format(log.packet_size) }} B
+              </td>
+              <td class="px-6 py-3">
+                <div class="flex justify-center">
+                  {% if log.packet_size > 1000 %}
+                  <span
+                    class="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-tertiary/10 text-tertiary border border-tertiary/20 font-label text-[9px] font-bold uppercase tracking-widest">
+                    <span class="w-1 h-1 rounded-full bg-tertiary shadow-[0_0_4px_#ff716a]"></span> Blocked
+                  </span>
+                  {% else %}
+                  <span
+                    class="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20 font-label text-[9px] font-bold uppercase tracking-widest">
+                    <span class="w-1 h-1 rounded-full bg-secondary shadow-[0_0_4px_#69f6b8]"></span> Safe
+                  </span>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div
+        class="px-6 py-3 bg-surface-container-high/50 flex justify-between items-center border-t border-outline-variant/10">
+        <!-- <div class="flex gap-6 items-center">
+          <span class="text-[10px] text-on-surface-variant/60 font-mono uppercase">Buffer: 1024 packets</span>
+          <span class="text-[10px] text-on-surface-variant/60 font-mono uppercase">Dropped: 0</span>
+        </div> -->
+        <div class="flex gap-2 text-[10px] font-mono text-primary font-bold">
+          <span class="animate-pulse">STREAMING LIVE</span>
+          <span class="">[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||]</span>
+        </div>
+      </div>
+    </section>
+    <!-- Bento Layout: Protocol Distribution and Recent Threat Alerts -->
+    <div class="grid grid-cols-3 gap-6 mt-8">
+      <!-- Protocol Distribution Column -->
+      <div class="col-span-1 bg-surface-container-low p-6 rounded-sm border border-outline-variant/10">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-1 h-4 bg-secondary"></div>
+          <h2 class="text-sm font-headline font-bold text-white uppercase tracking-wider">Protocol Distribution
+          </h2>
+        </div>
+        <div class="flex flex-col gap-5">
+          {% for stat in protocol_stats %}
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-[10px] font-mono uppercase text-on-surface-variant">
+              <span class="">{{ stat.name }} ({{ stat.percent }}%)</span>
+              <span class="">{{ stat.count_formatted }}</span>
+            </div>
+            <div class="w-full h-2 bg-surface-variant rounded-full overflow-hidden">
+              <div class="h-full {{ stat.color }}" style="width: {{ stat.percent }}%"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- Recent Threat Alerts Column -->
+      <div class="col-span-2 bg-surface-container-low p-0 rounded-sm border border-tertiary/20 overflow-hidden">
+        <div class="px-6 py-4 flex items-center justify-between border-b border-tertiary/10 bg-tertiary/5">
+          <div class="flex items-center gap-3">
+            <div class="w-1 h-4 bg-tertiary"></div>
+            <h2 class="text-sm font-headline font-bold text-white uppercase tracking-wider">Recent Threat
+              Alerts</h2>
+          </div>
+          <span
+            class="text-[10px] font-mono text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-sm animate-pulse font-bold">MONITORING</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-surface-container-high border-b border-outline-variant/10">
+                <th class="px-6 py-2.5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+                  Timestamp</th>
+                <th class="px-6 py-2.5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Source
+                  IP</th>
+                <th class="px-6 py-2.5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Threat
+                  Type</th>
+                <th
+                  class="px-6 py-2.5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest text-center">
+                  Severity</th>
+              </tr>
+            </thead>
+            <tbody class="font-mono text-[10px] divide-y divide-outline-variant/5">
+              {% for alert in alerts %}
+              <tr class="hover:bg-tertiary/5 transition-colors group">
+                <td class="px-6 py-3 text-on-surface-variant">{{ alert.timestamp.strftime('%H:%M:%S') }}</td>
+                <td class="px-6 py-3 text-tertiary">{{ alert.source_ip }}</td>
+                <td class="px-6 py-3 text-on-surface">{{ alert.threat_type }}</td>
+                <td class="px-6 py-3 flex justify-center">
+                  <span
+                    class="px-2 py-0.5 bg-tertiary text-on-tertiary rounded-sm font-bold tracking-tighter uppercase">{{
+                    alert.severity_level }}</span>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="4" class="px-6 py-3 text-center text-on-surface-variant">System Secure. No threats
+                  detected.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- <div class="px-6 py-3 bg-surface-container-high/30">
+          <button
+            class="w-full py-1.5 border border-tertiary/30 text-[9px] font-bold uppercase tracking-widest text-tertiary hover:bg-tertiary hover:text-on-tertiary transition-all"
+           >
+            Open Threat Intel Console
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleFullscreen() {
+      const elem = document.getElementById("traffic-table-section");
+
+      // If the browser is already in fullscreen mode
+      if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+          document.msExitFullscreen();
+        }
+      } else {
+        // Request fullscreen on the specific section
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+          elem.msRequestFullscreen();
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
