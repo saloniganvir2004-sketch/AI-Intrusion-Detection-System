@@ -1,0 +1,76 @@
+{
+    "accuracy": 0.999047430045644,
+    "precision": 0.9994877923851802,
+    "recall": 0.9984649496844619,
+    "f1": 0.9989761092150171,
+    "cm": {
+        "tn": 13463,
+        "fp": 6,
+        "fn": 18,
+        "tp": 11708
+    },
+    "top_features": [
+        {
+            "name": "Src Bytes",
+            "score": 0.19512180042918145,
+            "icon": "data_array"
+        },
+        {
+            "name": "Dst Bytes",
+            "score": 0.09828038986520644,
+            "icon": "protocol"
+        },
+        {
+            "name": "Same Srv Rate",
+            "score": 0.07121858674630789,
+            "icon": "lan"
+        },
+        {
+            "name": "Dst Host Same Srv Rate",
+            "score": 0.0709020256493004,
+            "icon": "blur_on"
+        }
+    ],
+    "pr_curve": [
+        {
+            "precision": 0.46540980353244693,
+            "recall": 1.0
+        },
+        {
+            "precision": 0.9911227595536016,
+            "recall": 0.9997441582807437
+        },
+        {
+            "precision": 0.9968532063276068,
+            "recall": 0.9995735971345727
+        },
+        {
+            "precision": 0.9983813256091327,
+            "recall": 0.9994030359884019
+        },
+        {
+            "precision": 0.9994028322811807,
+            "recall": 0.99906191369606
+        },
+        {
+            "precision": 0.9995728321230244,
+            "recall": 0.9977827050997783
+        },
+        {
+            "precision": 0.9999144055465206,
+            "recall": 0.9962476547842402
+        },
+        {
+            "precision": 1.0,
+            "recall": 0.993945079310933
+        },
+        {
+            "precision": 1.0,
+            "recall": 0.9904485758144295
+        },
+        {
+            "precision": 1.0,
+            "recall": 0.0
+        }
+    ]
+}
